@@ -18,6 +18,8 @@ class MenuDemo:
     SPACE_KEY = 32
     ESC_KEY = 27
 
+    AUTOKEY = 65
+
     PREFIX_SELECTED = '_X_'
     PREFIX_DESELECTED = '___'
 
@@ -25,9 +27,11 @@ class MenuDemo:
     screen = None
             
     def __init__(self):
+        self.auto = True
         self.screen = curses.initscr()
         curses.start_color()
         curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        self.screen.nodelay(1)
         curses.noecho()
         curses.cbreak()
         self.screen.keypad(1) 
@@ -40,8 +44,12 @@ class MenuDemo:
 
     def run(self):
         while True:
-            self.displayScreen()
+            td = self.displayScreen()
             # get user command
+            if self.auto:
+                self.updown(self.DOWN)
+                self.wait(td)
+
             c = self.screen.getch()
             if c == curses.KEY_UP: 
                 self.updown(self.UP)
@@ -49,8 +57,18 @@ class MenuDemo:
                 self.updown(self.DOWN)
             elif c == self.SPACE_KEY:
                 self.markLine()
+            elif c == ord('a'):
+                self.auto != self.auto
+                self.screen.addstr(0,0,"AUTO")
+                self.screen.refresh()
+                time.sleep(2)
             elif c == self.ESC_KEY:
                 self.exit()
+
+    def wait(self, td):
+        
+        time.sleep(td/10.0)
+
 
     def markLine(self):
         linenum = self.topLineNum + self.highlightLineNum
@@ -88,7 +106,9 @@ class MenuDemo:
                 self.screen.addstr(index, 0, line, curses.color_pair(1))
             else:
                 self.screen.addstr(index, 0, line, curses.A_BOLD)
+                td = len(line)
         self.screen.refresh()
+        return td
 
     # move highlight up/down one line
     def updown(self, increment):
