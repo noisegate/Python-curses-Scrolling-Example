@@ -26,6 +26,8 @@ class MenuDemo:
             
     def __init__(self):
         self.screen = curses.initscr()
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.noecho()
         curses.cbreak()
         self.screen.keypad(1) 
@@ -35,7 +37,7 @@ class MenuDemo:
         self.markedLineNums = []
         self.getOutputLines()
         self.run()
-        
+
     def run(self):
         while True:
             self.displayScreen()
@@ -83,7 +85,7 @@ class MenuDemo:
 
             # highlight current line            
             if index != self.highlightLineNum:
-                self.screen.addstr(index, 0, line)
+                self.screen.addstr(index, 0, line, curses.color_pair(1))
             else:
                 self.screen.addstr(index, 0, line, curses.A_BOLD)
         self.screen.refresh()
