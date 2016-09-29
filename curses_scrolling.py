@@ -30,7 +30,7 @@ class MenuDemo:
         self.auto = False
         self.screen = curses.initscr()
         curses.start_color()
-        curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
         #self.screen.nodelay(1)
         (y,x) = self.screen.getmaxyx()
         self.COLS = x
