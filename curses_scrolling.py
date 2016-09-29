@@ -32,6 +32,8 @@ class MenuDemo:
         curses.start_color()
         curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
         #self.screen.nodelay(1)
+        (y,x) = self.screen.getmaxyx()
+        self.COLS = x
         curses.noecho()
         curses.cbreak()
         self.screen.keypad(1) 
@@ -113,8 +115,9 @@ class MenuDemo:
 
             # highlight current line            
             #if index != self.highlightLineNum:
-            self.screen.addstr(index+offset, 0, line, curses.color_pair(1))
-
+            #self.screen.addstr(index+offset, 0, line, curses.color_pair(1))
+            self.screen.addstr(index+offset, 0, line[0:self.COLS-1], curses.color_pair(1))
+ 
             if (index+offset) == curses.LINES/2:
                 keepline = line
                 keepindex=index+offset
@@ -126,7 +129,10 @@ class MenuDemo:
         carriage = 0
         for i, word in enumerate(words):
             time.sleep(.2)
-            self.screen.addstr(keepindex, carriage, word, curses.A_BOLD)
+            if (carriage + len(word) + 1) < self.COLS:
+                self.screen.addstr(keepindex, carriage, word, curses.A_BOLD)
+            else:
+                pass
             carriage += len(word)+1
             self.screen.refresh()
 
