@@ -40,7 +40,7 @@ class MenuDemo:
         self.highlightLineNum = 0
         self.markedLineNums = []
         self.getOutputLines()
-        self.updown(0)
+        self.updown(1)
         self.run()
 
     def run(self):
@@ -94,7 +94,7 @@ class MenuDemo:
         td=0
         # now paint the rows
         top = self.topLineNum
-        if top<0:
+        if top<=0:
             offset = -top
             bottom = curses.LINES-offset
             top = 0
